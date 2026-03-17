@@ -40,6 +40,24 @@ cursor.execute("""
     )
 """)
 
+# PUBLIC_INTERFACE
+# Notes Table Creation (Reusable, single canonical flow)
+# Contract:
+# - Inputs: None (DDL)
+# - Outputs: Table present in database (checked by backend)
+# - Invariants: id PK, title and content not null, timestamps auto-managed
+# - Errors: surfaced via connection exceptions, printed to stdout
+# - Side effects: writes to database file (myapp.db)
+cursor.execute("""
+    CREATE TABLE IF NOT EXISTS notes (
+        id INTEGER PRIMARY KEY AUTOINCREMENT,
+        title TEXT NOT NULL,
+        content TEXT NOT NULL,
+        created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+        updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+    )
+""")
+
 # Create a sample users table as an example
 cursor.execute("""
     CREATE TABLE IF NOT EXISTS users (
